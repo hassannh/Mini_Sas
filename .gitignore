@@ -3,6 +3,9 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
+
+src/DB.properties
+
 ### Eclipse ###
 .apt_generated
 .classpath
