@@ -1,15 +1,23 @@
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+package Digital_Library;
+
+import DB.DatabaseConnection;
+
+import java.sql.*;
+
+public class Book {
+
+    private String ISBN;
+    private String status;
+    private String title;
+    private String author;
 
 
-public class getBooks {
-    public void retrieveBooks() {
-        // Create an instance of the databaseConnection class
-        databaseConnection DB = new databaseConnection();
+    public void getBooks(){
 
-        // Use the Connect method to establish a database connection
+
+
+        DatabaseConnection DB = new DatabaseConnection();
+
         Connection connection = DB.Connect();
 
         if (connection != null) {
@@ -17,21 +25,23 @@ public class getBooks {
                 // Create a SQL statement
                 Statement statement = connection.createStatement();
 
-                // Define your SQL query
-                String query = "SELECT * FROM books"; // Replace 'books' with your table name
+
+                String query = "SELECT * FROM book ";
 
                 // Execute the query and retrieve the result set
                 ResultSet resultSet = statement.executeQuery(query);
 
                 // Process the result set (iterate through the rows)
                 while (resultSet.next()) {
-                    int bookId; // Replace with your actual column names
-                    bookId = resultSet.getInt("id");
+                    String ISBN;
+                    ISBN = resultSet.getString("ISBN");
+                    String status = resultSet.getString("status");
                     String title = resultSet.getString("title");
                     String author = resultSet.getString("author");
 
                     // Process the data as needed (e.g., print it)
-                    System.out.println("Book ID: " + bookId);
+                    System.out.println("ISBN: " + ISBN);
+                    System.out.println("status" + status);
                     System.out.println("Title: " + title);
                     System.out.println("Author: " + author);
                     System.out.println();
@@ -44,8 +54,25 @@ public class getBooks {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else {
-            System.out.println("Failed to connect to the database.");
-        }
     }
+
+}
+
+
+
+    public void create_Book(String ISBN, String status, String title, String author){
+
+
+        //object
+        DatabaseConnection DB = new DatabaseConnection();
+
+        Connection connection = DB.Connect();
+
+
+
+
+    }
+
+
+
 }
