@@ -13,12 +13,12 @@ public class Book {
     private String author;
 
 
+    DatabaseConnection DB = new DatabaseConnection();
+
+
 
     public void getBooks(){
 
-
-
-        DatabaseConnection DB = new DatabaseConnection();
 
         Connection connection = DB.Connect();
 
@@ -77,7 +77,6 @@ public class Book {
         String author = scanner.nextLine();
 
 
-        DatabaseConnection DB = new DatabaseConnection();
 
         // Connect to the database
         Connection connection = DB.Connect();
@@ -116,7 +115,6 @@ public class Book {
         System.out.println("Enter the title of the book you want to update:");
         String titleToUpdate = scanner.nextLine();
 
-        DatabaseConnection DB = new DatabaseConnection();
 
         // Connect to the database
         Connection connection = DB.Connect();
@@ -168,33 +166,41 @@ public class Book {
 
 
     public void deleteBookByISBN(Scanner scanner) {
-
         System.out.println("Enter the ISBN of the book you want to delete:");
         String isbnToDelete = scanner.nextLine();
-
-        DatabaseConnection DB = new DatabaseConnection();
-
 
         Connection connection = DB.Connect();
 
         if (connection != null) {
             try {
+                connection.setAutoCommit(false);  // Disable auto-commit
+
                 Statement statement = connection.createStatement();
 
                 // Check if the book with the given ISBN exists
-                String checkQuery = "SELECT * FROM book WHERE isbn = '" + isbnToDelete + "'";
+                String checkQuery = "SELECT * FROM book WHERE ISBN = '" + isbnToDelete + "'";
                 ResultSet resultSet = statement.executeQuery(checkQuery);
 
                 if (resultSet.next()) {
+                    // Check if there are related records in the Emprunt table
+                    String relatedEmpruntQuery = "DELETE FROM Emprunt WHERE Book_ISBN = '" + isbnToDelete + "'";
+                    int empruntRowsAffected = statement.executeUpdate(relatedEmpruntQuery);
 
-                    String deleteQuery = "DELETE FROM book WHERE isbn = '" + isbnToDelete + "'";
+                    // Delete the book after related Emprunt records have been deleted
+                    if (empruntRowsAffected >= 0) {
+                        String deleteQuery = "DELETE FROM book WHERE ISBN = '" + isbnToDelete + "'";
+                        int bookRowsAffected = statement.executeUpdate(deleteQuery);
 
-                    int rowsAffected = statement.executeUpdate(deleteQuery);
-
-                    if (rowsAffected > 0) {
-                        System.out.println("Book with ISBN " + isbnToDelete + " deleted successfully.");
+                        if (bookRowsAffected > 0) {
+                            System.out.println("Book with ISBN " + isbnToDelete + " deleted successfully.");
+                            connection.commit();  // Commit the transaction
+                        } else {
+                            System.out.println("Failed to delete the book with ISBN " + isbnToDelete + ".");
+                            connection.rollback();  // Rollback the transaction
+                        }
                     } else {
-                        System.out.println("Failed to delete the book with ISBN " + isbnToDelete + ".");
+                        System.out.println("Failed to delete related Emprunt records.");
+                        connection.rollback();  // Rollback the transaction
                     }
                 } else {
                     System.out.println("Book with ISBN " + isbnToDelete + " does not exist.");
@@ -211,12 +217,13 @@ public class Book {
 
 
 
+
+
     public void searchBooksByStatus(Scanner scanner) {
         // Prompt the user for the status to search for
         System.out.println("Enter the status to search for:");
         String statusToSearch = scanner.nextLine();
 
-        DatabaseConnection DB = new DatabaseConnection();
 
         // Connect to the database
         Connection connection = DB.Connect();
@@ -255,6 +262,50 @@ public class Book {
             }
         }
     }
+
+
+    public void searchBooksByAuthor(Scanner scanner) {
+        // Prompt the user for the author to search for
+        System.out.println("Enter the author's name to search for:");
+        String authorToSearch = scanner.nextLine();
+
+        // Connect to the database
+        Connection connection = DB.Connect();
+
+        if (connection != null) {
+            try {
+                Statement statement = connection.createStatement();
+
+                String searchQuery = "SELECT * FROM book WHERE author LIKE '%" + authorToSearch + "%'";
+                ResultSet resultSet = statement.executeQuery(searchQuery);
+
+                if (resultSet.next()) {
+                    System.out.println("Books by author '" + authorToSearch + "':");
+
+                    do {
+                        String isbn = resultSet.getString("isbn");
+                        String title = resultSet.getString("title");
+                        String author = resultSet.getString("author");
+                        String status = resultSet.getString("status");
+
+                        System.out.println("ISBN: " + isbn);
+                        System.out.println("Title: " + title);
+                        System.out.println("Author: " + author);
+                        System.out.println("status:" + status);
+                    } while (resultSet.next());
+                } else {
+                    System.out.println("No books found by author '" + authorToSearch + "'.");
+                }
+
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
 
