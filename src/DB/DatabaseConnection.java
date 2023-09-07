@@ -11,10 +11,34 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class DatabaseConnection {
+
+
+
+
+
     public static String driver;
     public static String url;
     public static String username;
     public static String password;
+    public static DatabaseConnection DB_instance = null;
+
+
+
+
+    //constracter
+    public DatabaseConnection(){
+
+    }
+
+    public static  DatabaseConnection getInstance()
+    {
+        if (DB_instance == null)
+            DB_instance = new DatabaseConnection();
+
+        return DB_instance;
+    }
+
+
 
     static {
     // JDBC URL, username, and password of MySQL server
@@ -45,6 +69,7 @@ public class DatabaseConnection {
         }
         try {
             connectiong = DriverManager.getConnection(url , username , password);
+            System.out.println("connectedd db");
         }catch (SQLException e){
             e.printStackTrace();
         }

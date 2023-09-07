@@ -1,6 +1,8 @@
 package Digital_Library;
 
 import DB.DatabaseConnection;
+
+import java.util.List;
 import java.util.Scanner;
 
 import java.sql.*;
@@ -8,12 +10,60 @@ import java.sql.*;
 public class Book {
 
     private String ISBN;
-    private String status;
+    private BookStatus status;
     private String title;
     private String author;
+    private List<Book> books;
 
 
-    DatabaseConnection DB = new DatabaseConnection();
+    DatabaseConnection DB = DatabaseConnection.getInstance();
+
+
+
+    public enum BookStatus {
+        AVAILABLE,
+        BORROWED,
+        LOST
+    }
+
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+
+
+    public BookStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookStatus status) {
+        this.status = status;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+
+
 
 
 
@@ -67,8 +117,8 @@ public class Book {
         System.out.println("Enter ISBN:");
         String ISBN = scanner.nextLine();
 
-        System.out.println("Enter status:");
-        String status = scanner.nextLine();
+        System.out.println("Enter status (AVAILABLE, BORROWED, LOST):");
+        String statusInput = scanner.nextLine();
 
         System.out.println("Enter title:");
         String title = scanner.nextLine();
@@ -76,9 +126,19 @@ public class Book {
         System.out.println("Enter author:");
         String author = scanner.nextLine();
 
+        BookStatus status = null;
+
+        // Convert the user input to the enum value
+        try {
+            status = BookStatus.valueOf(statusInput.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid status input.");
+            return;
+        }
 
 
-        // Connect to the database
+
+
         Connection connection = DB.Connect();
 
         if (connection != null) {
@@ -111,12 +171,11 @@ public class Book {
 
 
     public void update_Book(Scanner scanner) {
-        // Prompt the user for the name of the book
+
         System.out.println("Enter the title of the book you want to update:");
         String titleToUpdate = scanner.nextLine();
 
 
-        // Connect to the database
         Connection connection = DB.Connect();
 
         if (connection != null) {
@@ -129,18 +188,25 @@ public class Book {
 
                 if (resultSet.next()) {
                     // The book exists, allow the user to update its attributes
+                    Book book = new Book();
+                    book.setTitle(resultSet.getString("title"));
+                    book.setStatus(BookStatus.valueOf(resultSet.getString("status")));
+                    book.setAuthor(resultSet.getString("author"));
+
                     System.out.println("Enter new status:");
                     String newStatus = scanner.nextLine();
+                    book.setStatus(BookStatus.valueOf(newStatus));
 
                     System.out.println("Enter new title:");
                     String newTitle = scanner.nextLine();
+                    book.setTitle(newTitle);
 
                     System.out.println("Enter new author:");
                     String newAuthor = scanner.nextLine();
+                    book.setAuthor(newAuthor);
 
-
-                    String updateQuery = "UPDATE book SET status = '" + newStatus + "', " +
-                            "title = '" + newTitle + "', author = '" + newAuthor + "' " +
+                    String updateQuery = "UPDATE book SET status = '" + book.getStatus() + "', " +
+                            "title = '" + book.getTitle() + "', author = '" + book.getAuthor() + "' " +
                             "WHERE title = '" + titleToUpdate + "'";
 
                     int rowsAffected = statement.executeUpdate(updateQuery);
@@ -162,6 +228,7 @@ public class Book {
             }
         }
     }
+
 
 
 

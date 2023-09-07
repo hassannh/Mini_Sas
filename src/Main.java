@@ -8,8 +8,9 @@ public class Main {
     public static void main(String[] args) {
         try {
 
-            DatabaseConnection DB = new DatabaseConnection();
+            DatabaseConnection DB = DatabaseConnection.getInstance();
             DB.Connect();
+
 
             Menu menu = new Menu();
             menu.start_menu();
