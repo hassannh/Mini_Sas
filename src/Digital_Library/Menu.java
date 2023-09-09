@@ -2,13 +2,10 @@ package Digital_Library;
 
 import java.util.Scanner;
 
+
 import static java.awt.SystemColor.menu;
 
 public class Menu {
-
-
-
-
 
 
     public void start_menu() {
@@ -37,6 +34,7 @@ public class Menu {
             System.out.println(yellowColor + "********************************************* 8 : Get Member By Membership_num *************************" + resetColor);
             System.out.println(yellowColor + "********************************************* 9 : Update Member ****************************************" + resetColor);
             System.out.println(yellowColor + "********************************************* 10 : Delete Member ***************************************" + resetColor);
+            System.out.println(yellowColor + "********************************************* 11 : Borrow Book ***************************************" + resetColor);
 
             System.out.print("Enter your choice : ");
             if (scanner.hasNextInt()) {
@@ -84,6 +82,10 @@ public class Menu {
                         member = new Member();
                         member.deleteMember(scanner);
                         break;
+                    case 11:
+                        Borrow borrow = new Borrow();
+                        borrow.borrowBookWithInput(scanner);
+                        break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                         continue;
@@ -103,7 +105,6 @@ public class Menu {
 
         scanner.close();
     }
-
 
 
 }
