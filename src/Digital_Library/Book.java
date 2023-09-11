@@ -142,8 +142,10 @@ public class Book {
                 int rowsAffected = statement.executeUpdate(query);
 
                 if (rowsAffected > 0) {
+
                     System.out.println("Book created successfully.");
                 } else {
+
                     System.out.println("Failed to create the book.");
                 }
 
