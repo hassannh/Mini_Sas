@@ -86,6 +86,10 @@ public class Menu {
                         Borrow borrow = new Borrow();
                         borrow.borrowBookWithInput(scanner);
                         break;
+                    case 12:
+                        Borrow borroww = new Borrow();
+                        borroww.getBorrowedBooks();
+                        break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                         continue;

@@ -69,7 +69,7 @@ public class DatabaseConnection {
         }
         try {
             connectiong = DriverManager.getConnection(url , username , password);
-            System.out.println("connectedd db");
+
         }catch (SQLException e){
             e.printStackTrace();
         }

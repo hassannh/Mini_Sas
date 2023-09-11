@@ -5,6 +5,8 @@ import DB.DatabaseConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Borrow {
@@ -13,6 +15,13 @@ public class Borrow {
     private Member Member_membership_num;
     private Book Book_ISBN;
     private DatabaseConnection DB = new DatabaseConnection();
+
+    public Borrow(String Date_Emprunt, String Date_Retour, int Mumber_membership_num, String Book_ISBN) {
+    }
+
+    public Borrow() {
+
+    }
 
     public String getdate_E() {
         return date_E;
@@ -48,59 +57,30 @@ public class Borrow {
 
     Member member;
 
-    public void borrowBook(Member member, Book book) {
-        // Set the borrow date to the current date
-        LocalDate currentDate = LocalDate.now();
-        this.setDate_E(currentDate.toString());
-
-        // Calculate the return date (e.g., due in 14 days)
-        LocalDate returnDate = currentDate.plusDays(14);
-        this.setDate_R(returnDate.toString());
-
-        // Set the member and book for this borrow instance
-        this.setMember_membership_num(member);
-        this.setBook_ISBN(book);
-
-        // Update the book status to "BORROWED"
-        book.setStatus(Book.BookStatus.BORROWED);
 
 
-    }
+
 
     public void borrowBookWithInput(Scanner scanner) {
+
+
+
         // Ask the user to select a book to borrow
-        System.out.print("Enter the number of the book you want to borrow: ");
+        System.out.print("Enter the book ISBN : ");
         String bookChoice = scanner.next();
         scanner.nextLine();
 
 
-        System.out.print("Enter the number of the book you want to borrow: ");
+        System.out.print("Enter the number the membership number: ");
         String membership_num = scanner.next();
         scanner.nextLine();
 
 
 
-        // Check if the book choice is valid
-
-
-        // Assuming you have a list of members (members), get the member
-        //System.out.print("Enter the membership number of the member: ");
-        //String memberMembershipNum = scanner.nextLine();
-
-
-        Member member = null;
-
-
-        if (member == null) {
-            System.out.println("Member not found.");
-            return;
-        }
-
-        // Set the borrow date to the current date
         LocalDate currentDate = LocalDate.now();
         String Date_Emprunt = currentDate.toString();
 
-        // Calculate the return date (e.g., due in 14 days)
+
         LocalDate returnDate = currentDate.plusDays(14);
         String Date_Retour = returnDate.toString();
 
@@ -115,13 +95,14 @@ public class Borrow {
 
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-                preparedStatement.setString(1, bookChoice);
-                preparedStatement.setString(2, membership_num);
-                preparedStatement.setDate(3, Date.valueOf(currentDate));
-                preparedStatement.setDate(4, Date.valueOf(returnDate));
+
+                preparedStatement.setDate(1, Date.valueOf(currentDate));
+                preparedStatement.setDate(2, Date.valueOf(returnDate));
+                preparedStatement.setString(3, bookChoice);
+                preparedStatement.setString(4, membership_num);
 
                 // Execute query
-                int rowsAffected = preparedStatement.executeUpdate(query);
+                int rowsAffected = preparedStatement.executeUpdate();
 
                 if (rowsAffected > 0) {
                     System.out.println("Book was borrowed successfully.");
@@ -132,9 +113,54 @@ public class Borrow {
                 preparedStatement.close();
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.getMessage();
+
+                System.out.println(e.getMessage());
             }
         }
     }
+
+
+
+
+    public List<Borrow> getBorrowedBooks() {
+        Connection connection = DB.Connect();
+        List<Borrow> borrowedBooks = new ArrayList<>();
+
+        if (connection != null) {
+            try {
+                // Create a SQL statement
+                Statement statement = connection.createStatement();
+
+                String query = "SELECT * FROM Emprunt";
+
+                // Execute the query and retrieve the result set
+                ResultSet resultSet = statement.executeQuery(query);
+
+                // Process the result set (iterate through the rows)
+                while (resultSet.next()) {
+                    String dateE = resultSet.getString("Date_Emprunt");
+                    String dateR = resultSet.getString("Date_Retour");
+                    int memberId = resultSet.getInt("Mumber_membership_num");
+                    String ISBN = resultSet.getString("Book_ISBN");
+
+                    // Create a Borrow object and add it to the list
+                    Borrow borrow = new Borrow(dateE, dateR, memberId, ISBN);
+                    borrowedBooks.add(borrow);
+                }
+
+                // Close the resources
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return borrowedBooks;
+    }
+
+
+
 
 }
