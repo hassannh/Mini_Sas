@@ -117,8 +117,7 @@ public class Book {
         System.out.println("Enter ISBN:");
         String ISBN = scanner.nextLine();
 
-        System.out.println("Enter status (AVAILABLE, BORROWED, LOST):");
-        String statusInput = scanner.nextLine();
+        String statusInput = "AVALIBALE";
 
         System.out.println("Enter title:");
         String title = scanner.nextLine();
@@ -127,17 +126,6 @@ public class Book {
         String author = scanner.nextLine();
 
         BookStatus status = null;
-
-        // Convert the user input to the enum value
-        try {
-            status = BookStatus.valueOf(statusInput.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid status input.");
-            return;
-        }
-
-
-
 
         Connection connection = DB.Connect();
 
@@ -148,7 +136,7 @@ public class Book {
 
 
                 String query = "INSERT INTO book (ISBN, status, title, author) " +
-                        "VALUES ('" + ISBN + "', '" + status + "', '" + title + "', '" + author + "')";
+                        "VALUES ('" + ISBN + "', '" + statusInput + "', '" + title + "', '" + author + "')";
 
                 // Execute query
                 int rowsAffected = statement.executeUpdate(query);
@@ -371,6 +359,49 @@ public class Book {
                 e.printStackTrace();
             }
         }
+    }
+
+
+
+    public int displayBookStatistics(String status) {
+        Connection connection = DB.Connect();
+
+        if (connection != null) {
+            try {
+                Statement statement = connection.createStatement();
+
+                // Count the number of books in each status category
+                String borrowedQuery = "SELECT COUNT(*) AS BorrowedCount FROM book WHERE status = ?";
+
+
+
+
+                PreparedStatement preparedStatement = connection.prepareStatement(borrowedQuery);
+
+
+                preparedStatement.setString(1, status);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+
+                if (resultSet.next()) {
+                    int borrowedCount = resultSet.getInt("BorrowedCount");
+
+            return borrowedCount;
+
+                } else {
+                    System.out.println("Failed to retrieve book statistics.");
+                }
+
+                // Close the result sets and statements
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 
 

@@ -20,21 +20,37 @@ public class Menu {
         Member member;
 
         while (true) {
-            System.out.println(blueColor + "********************************************************************************************************" + blueReset);
-            System.out.println(blueColor + "************************************     Welcome to the digital library     ****************************" + blueReset);
-            System.out.println(blueColor + "********************************************************************************************************" + blueReset);
+            System.out.println(blueColor + "****************************************************************************" + blueReset);
+            System.out.println(blueColor + "************                 Welcome to the digital library         ********" + blueReset);
+            System.out.println(blueColor + "****************************************************************************" + blueReset);
 
-            System.out.println(yellowColor + "********************************************* 1 : Show Books *******************************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 2 : Creat New Book ***************************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 3 : Update Book ******************************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 4 : Delete Book ******************************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 5 : Search For A Book by status **************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 6 : searchBooksByAuthor  *********************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 7 : Creat new Member *************************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 8 : Get Member By Membership_num *************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 9 : Update Member ****************************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 10 : Delete Member ***************************************" + resetColor);
-            System.out.println(yellowColor + "********************************************* 11 : Borrow Book ***************************************" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        1 : Show Books                  **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        2 : Creat New Book             **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        3 : Update Book                 **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        4 : Delete Book                 **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        5 : Search For A Book by status **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        6 : searchBooksByAuthor         **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        7 : Creat new Member            **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        8 : Get Member By Membership_num  ********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        9 : Update Member               **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        10 : Delete Member              **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        11 : Borrow Book                **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        12 : Show Borrowed Books        **********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "**********                        13 : display Book Statistics    +*********" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
 
             System.out.print("Enter your choice : ");
             if (scanner.hasNextInt()) {
@@ -89,6 +105,15 @@ public class Menu {
                     case 12:
                         Borrow borroww = new Borrow();
                         borroww.getBorrowedBooks();
+                        break;
+                    case 13:
+                        Book book2 = new Book();
+                        int lost = book2.displayBookStatistics("LOST");
+                        int avalible = book2.displayBookStatistics("AVALIBALE");
+                        int borrowed = book2.displayBookStatistics("BORROWED");
+                        System.out.println("Lost books      : " + lost);
+                        System.out.println("Avalibale books : " + avalible);
+                        System.out.println("Borrowed books  : " + borrowed);
                         break;
                     default:
                         System.out.println("Invalid choice. Please try again.");

@@ -121,7 +121,8 @@ public class Borrow {
     }
 
 
-
+    String blueColor = "\u001b[94m";
+    String blueReset = "\u001b[0m";
 
     public List<Borrow> getBorrowedBooks() {
         Connection connection = DB.Connect();
@@ -144,10 +145,22 @@ public class Borrow {
                     int memberId = resultSet.getInt("Mumber_membership_num");
                     String ISBN = resultSet.getString("Book_ISBN");
 
-                    // Create a Borrow object and add it to the list
-                    Borrow borrow = new Borrow(dateE, dateR, memberId, ISBN);
-                    borrowedBooks.add(borrow);
+                    System.out.println(blueColor + "===================================" + blueReset);
+                    System.out.println(blueColor + "========== Borrowed Books =========" + blueReset);
+
+                    System.out.println(blueColor + "===================================" + blueReset);
+                    System.out.println("Date_Emprunt: " + dateE);
+                    System.out.println(blueColor + "===================================" + blueReset);
+                    System.out.println("Date_Retour: " + dateR);
+                    System.out.println(blueColor + "===================================" + blueReset);
+                    System.out.println("Mumber_membership_num: " + memberId);
+                    System.out.println(blueColor + "===================================" + blueReset);
+                    System.out.println("Book_ISBN: " + ISBN);
+                    System.out.println(blueColor + "===================================" + blueReset);
+                    System.out.println();
                 }
+
+
 
                 // Close the resources
                 resultSet.close();
