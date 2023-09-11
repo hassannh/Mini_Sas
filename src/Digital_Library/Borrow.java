@@ -65,7 +65,7 @@ public class Borrow {
 
 
 
-        // Ask the user to select a book to borrow
+
         System.out.print("Enter the book ISBN : ");
         String bookChoice = scanner.next();
         scanner.nextLine();
@@ -84,12 +84,12 @@ public class Borrow {
         LocalDate returnDate = currentDate.plusDays(14);
         String Date_Retour = returnDate.toString();
 
-        // Insert the borrowing information into the database
+
         Connection connection = DB.Connect();
 
         if (connection != null) {
             try {
-                //Statement statement = connection.createStatement();
+
 
                 String query = "INSERT INTO Emprunt (Date_Emprunt, Date_Retour, Book_ISBN, Mumber_membership_num) VALUES (?,?,?,?)";
 
@@ -101,7 +101,7 @@ public class Borrow {
                 preparedStatement.setString(3, bookChoice);
                 preparedStatement.setString(4, membership_num);
 
-                // Execute query
+
                 int rowsAffected = preparedStatement.executeUpdate();
 
                 if (rowsAffected > 0) {

@@ -1,0 +1,14 @@
+DELIMITER //
+
+CREATE TRIGGER update_book_status
+    AFTER INSERT ON Emprunt
+    FOR EACH ROW
+BEGIN
+    -- Update the status of the book to 'Borrowed' when a new borrowing record is inserted.
+    UPDATE book
+    SET status = 'BORROWED'
+    WHERE book.ISBN = NEW.Book_ISBN;
+END;
+//
+
+DELIMITER ;

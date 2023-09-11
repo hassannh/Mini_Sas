@@ -91,11 +91,21 @@ public class Book {
                     String title = resultSet.getString("title");
                     String author = resultSet.getString("author");
 
-                    // Process the data as needed (e.g., print it)
+                    String blueColor = "\u001b[94m";
+                    String blueReset = "\u001b[0m";
+
+
+                    System.out.println(blueColor + "===================================" + blueReset);
+                    System.out.println(blueColor + "=======         BOOK          =====" + blueReset);
+                    System.out.println(blueColor + "===================================" + blueReset);
                     System.out.println("ISBN: " + ISBN);
+                    System.out.println(blueColor + "===================================" + blueReset);
                     System.out.println("status: " + status);
+                    System.out.println(blueColor + "===================================" + blueReset);
                     System.out.println("Title: " + title);
+                    System.out.println(blueColor + "===================================" + blueReset);
                     System.out.println("Author: " + author);
+                    System.out.println(blueColor + "===================================" + blueReset);
                     System.out.println();
                 }
 
