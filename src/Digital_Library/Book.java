@@ -127,7 +127,7 @@ public class Book {
         System.out.println("Enter ISBN:");
         String ISBN = scanner.nextLine();
 
-        String statusInput = "AVALIBALE";
+        String Defultstatus = "AVALIBALE";
 
         System.out.println("Enter title:");
         String title = scanner.nextLine();
@@ -146,7 +146,7 @@ public class Book {
 
 
                 String query = "INSERT INTO book (ISBN, status, title, author) " +
-                        "VALUES ('" + ISBN + "', '" + statusInput + "', '" + title + "', '" + author + "')";
+                        "VALUES ('" + ISBN + "', '" + Defultstatus + "', '" + title + "', '" + author + "')";
 
                 // Execute query
                 int rowsAffected = statement.executeUpdate(query);
