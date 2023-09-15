@@ -16,12 +16,7 @@ public class Borrow {
     private Book Book_ISBN;
     private DatabaseConnection DB = new DatabaseConnection();
 
-    public Borrow(String Date_Emprunt, String Date_Retour, int Mumber_membership_num, String Book_ISBN) {
-    }
 
-    public Borrow() {
-
-    }
 
     public String getdate_E() {
         return date_E;

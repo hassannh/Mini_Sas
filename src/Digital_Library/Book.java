@@ -2,6 +2,9 @@ package Digital_Library;
 
 import DB.DatabaseConnection;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -240,7 +243,6 @@ public class Book {
 
         if (connection != null) {
             try {
-                connection.setAutoCommit(false);  // Disable auto-commit
 
                 Statement statement = connection.createStatement();
 
@@ -418,5 +420,49 @@ public class Book {
 
 
 
+
+
+    public void generateStatisticsFile(String status, String filename) {
+        Connection connection = DB.Connect();
+
+        if (connection != null) {
+            try {
+                Statement statement = connection.createStatement();
+
+                // Count the number of books in each status category
+                String borrowedQuery = "SELECT COUNT(*) AS BorrowedCount FROM book WHERE status = ?";
+
+                PreparedStatement preparedStatement = connection.prepareStatement(borrowedQuery);
+                preparedStatement.setString(1, status);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    int borrowedCount = resultSet.getInt("BorrowedCount");
+
+                    // Create a PrintWriter to write to the specified file
+                    try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+                        writer.println("Status: " + status);
+                        writer.println("Borrowed Count: " + borrowedCount);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("Failed to retrieve book statistics.");
+                }
+
+                // Close the result sets and statements
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+        }
 
 }

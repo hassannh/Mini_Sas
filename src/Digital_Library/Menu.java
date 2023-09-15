@@ -20,14 +20,13 @@ public class Menu {
         Member member;
 
         while (true) {
-            System.out.println(blueColor + "****************************************************************************" + blueReset);
-            System.out.println(blueColor + "************                 Welcome to the digital library         ********" + blueReset);
-            System.out.println(blueColor + "****************************************************************************" + blueReset);
-
+            System.out.println(blueColor + "******************************************************************************" + blueReset);
+            System.out.println(blueColor + "************                 Welcome to the digital library         **********" + blueReset);
+            System.out.println(blueColor + "******************************************************************************" + blueReset);
             System.out.println(yellowColor + "============================================================================" + resetColor);
             System.out.println(yellowColor + "**********                        1 : Show Books                  **********" + resetColor);
             System.out.println(yellowColor + "============================================================================" + resetColor);
-            System.out.println(yellowColor + "**********                        2 : Creat New Book             **********" + resetColor);
+            System.out.println(yellowColor + "**********                        2 : Creat New Book              **********" + resetColor);
             System.out.println(yellowColor + "============================================================================" + resetColor);
             System.out.println(yellowColor + "**********                        3 : Update Book                 **********" + resetColor);
             System.out.println(yellowColor + "============================================================================" + resetColor);
@@ -35,7 +34,7 @@ public class Menu {
             System.out.println(yellowColor + "============================================================================" + resetColor);
             System.out.println(yellowColor + "**********                        5 : Search For A Book by status **********" + resetColor);
             System.out.println(yellowColor + "============================================================================" + resetColor);
-            System.out.println(yellowColor + "**********                        6 : searchBooksByAuthor         **********" + resetColor);
+            System.out.println(yellowColor + "**********                        6 : search Books By Author         *******" + resetColor);
             System.out.println(yellowColor + "============================================================================" + resetColor);
             System.out.println(yellowColor + "**********                        7 : Creat new Member            **********" + resetColor);
             System.out.println(yellowColor + "============================================================================" + resetColor);
@@ -48,7 +47,7 @@ public class Menu {
             System.out.println(yellowColor + "**********                        11 : Borrow Book                **********" + resetColor);
             System.out.println(yellowColor + "============================================================================" + resetColor);
             System.out.println(yellowColor + "**********                        12 : Show Borrowed Books        **********" + resetColor);
-            System.out.println(yellowColor + "============================================================================" + resetColor);System.out.println(yellowColor + "============================================================================" + resetColor);
+            System.out.println(yellowColor + "============================================================================" + resetColor);
             System.out.println(yellowColor + "**********                        13 : display Book Statistics    +*********" + resetColor);
             System.out.println(yellowColor + "============================================================================" + resetColor);
 
@@ -115,6 +114,7 @@ public class Menu {
                         System.out.println("Avalibale books : " + avalible);
                         System.out.println("Borrowed books  : " + borrowed);
                         break;
+
                     default:
                         System.out.println("Invalid choice. Please try again.");
                         continue;
